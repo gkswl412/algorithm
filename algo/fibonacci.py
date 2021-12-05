@@ -1,11 +1,11 @@
-def fibonacci(n):
-    list = [0, 1]
-    if n==0:
-        return 0
-    elif n==1:
-        return 1
+메모 = { 1: 1, 2: 1}
+def f(n):
+    if n in 메모:
+        return 메모[n]
     else:
-        return fibonacci(n-2) + fibonacci(n-1)
+        output = f(n-1) + f(n-2)
+        메모[n] = output
+        return output
 
-    
-print(fibonacci(int(input())))
+print(f(100))
+print(메모)
