@@ -16,7 +16,7 @@ public class Main {
 	
 	void add(int n) {
 		arr[++length] = n;
-		for(int i=length; i>1; i/=2) {
+		for(int i=length; i/2>0; i/=2) {
 			if(arr[i/2]<arr[i]) {
 				swap(i/2,i);
 			}else {
