@@ -1,144 +1,147 @@
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+
 public class Main {
-	public static int[] maxHeap;
-	public static int[] minHeap;
-	public static int maxHeapSize = 0;
-	public static int minHeapSize = 0;
-	public static StringBuilder sb = new StringBuilder();
-	
-	public static void main(String[] args) 
-	throws Exception {
-		BufferedReader br = 
-		new BufferedReader(new InputStreamReader(System.in));
-		
-		// 연산의 횟수 N
+
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		
-		// heap 초기화
-		maxHeap = new int[N+1];
-		minHeap = new int[N+1];
+		MxHeap maxHeap = new MxHeap(N);
+		MnHeap minHeap = new MnHeap(N);
 		
-		// 연산 시작
-		for(int i=0; i<N; i++){
-			
-			// 인풋값 x
-			int x = Integer.parseInt(br.readLine());
-			
-			// 최대힙의 크기가 최소힙의 크기보다 크게 유지
-			if(maxHeapSize == minHeapSize){
-				pushMaxHeap(x);
-				if(minHeapSize>0){
-					swapMaxAndMin();
+		for(int i=0; i<N; i++) {
+			int input = Integer.parseInt(br.readLine());
+			if( maxHeap.size <= minHeap.size ) {
+				if( minHeap.arr[1] > input ) {
+					maxHeap.add(input);
+				}else {
+					maxHeap.add(minHeap.pop());
+					minHeap.add(input);
 				}
-			}else{
-				pushMinHeap(x);
-				swapMaxAndMin();
+			}else {
+				if( maxHeap.arr[1] < input ) {
+					minHeap.add(input);
+				}else {
+					minHeap.add(maxHeap.pop());
+					maxHeap.add(input);
+				}
 			}
-			
-		
-			
-			sb.append(maxHeap[1] + "\n");
-
+			sb.append(maxHeap.arr[1]).append("\n");
 		}
 		System.out.println(sb);
 	}
+
+}
+
+class MxHeap {
 	
-	public static void pushMaxHeap(int x){
-		maxHeap[++maxHeapSize] = x;
-		// 최대힙 정렬 
-		for(int i=maxHeapSize; i>1; i/=2){
-			if(maxHeap[i] > maxHeap[i/2]){
-				swap(i, i/2, maxHeap);
-			}else{
+	int size;
+	int[] arr;
+	final int minVal = -10001;
+	
+	public MxHeap(int n) {
+		size = 0;
+		arr = new int[n+1];
+		Arrays.fill(arr, minVal);
+	}
+	
+	void swap(int i, int j) {
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+	}
+	
+	void add(int x) {
+		arr[++size] = x;
+		for(int i=size; i>1; i/=2) {
+			if( arr[i] > arr[i/2] ) {
+				swap(i,i/2);
+			}else {
 				break;
 			}
 		}
 	}
 	
-	public static void pushMinHeap(int x){
-		minHeap[++minHeapSize] = x;
-		// 최소힙 정렬
-		for(int i=minHeapSize; i>1; i/=2){
-			if(minHeap[i] < minHeap[i/2]){
-				swap(i, i/2, minHeap);
-			}else{
+	int pop() {
+		int result = arr[1];
+		arr[1] = arr[size];
+		arr[size--] = minVal;
+		for( int i=1; i*2<=size; ) {
+			if( arr[i*2] > arr[i*2+1] ) {
+				if( arr[i*2] > arr[i] ) {
+					swap(i,i*2);
+					i = i*2;
+				}else {
+					break;
+				}
+			}else {
+				if( arr[i*2+1] > arr[i] ) {
+					swap(i, i*2+1);
+					i = i*2+1;
+				}else {
+					break;
+				}
+			}
+		}
+		return result;
+	}
+}
+
+class MnHeap {
+	
+	int size;
+	int[] arr;
+	final int maxVal = 10001;
+	
+	public MnHeap(int n) {
+		size = 0;
+		arr = new int[n+1];
+		Arrays.fill(arr, maxVal);
+	}
+	
+	void swap(int i, int j) {
+		int temp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = temp;
+	}
+	
+	void add(int x) {
+		arr[++size] = x;
+		for(int i=size; i>1; i/=2) {
+			if( arr[i] < arr[i/2] ) {
+				swap(i,i/2);
+			}else {
 				break;
 			}
 		}
 	}
 	
-	public static void swap(int i, int j, int[] heap){
-		int temp = heap[i];
-		heap[i] = heap[j];
-		heap[j] = temp;
-	}
-	
-	public static void swapMaxAndMin(){
-		if(maxHeap[1] > minHeap[1]){
-			int temp = maxHeap[1];
-			maxHeap[1] = minHeap[1];
-			minHeap[1] = temp;
-			
-			// 최소힙 정렬
-			for(int i=1; i*2<=minHeapSize; ){
-				// 왼쪽 자식이 마지막 노드인 경우
-				if(i*2==minHeapSize){
-					if(minHeap[i] > minHeap[i*2]){
-						swap(i,i*2,minHeap);
-						i = i*2;
-					}else{
-						break;
-					}
-				// 오른쪽 자식이 마지막 노드인 경우
-				}else{
-					if(minHeap[i*2+1] > minHeap[i*2]){
-						if(minHeap[i] > minHeap[i*2]){
-							swap(i,i*2,minHeap);
-							i = i*2;
-						}else{
-							break;
-						}
-					}else{
-						if(minHeap[i] > minHeap[i*2+1]){
-							swap(i,i*2+1,minHeap);
-							i = i*2+1;
-						}else{
-							break;
-						}
-					}
+	int pop() {
+		int result = arr[1];
+		arr[1] = arr[size];
+		arr[size--] = maxVal;
+		for( int i=1; i*2<=size; ) {
+			if( arr[i*2] < arr[i*2+1] ) {
+				if( arr[i*2] < arr[i] ) {
+					swap(i,i*2);
+					i = i*2;
+				}else {
+					break;
+				}
+			}else {
+				if( arr[i*2+1] < arr[i] ) {
+					swap(i, i*2+1);
+					i = i*2+1;
+				}else {
+					break;
 				}
 			}
-			
-			// 최대힙 정렬
-			for(int i=1; i*2<=maxHeapSize; ){
-				// 왼쪽 자식이 마지막 노드인 경우
-				if(i*2==maxHeapSize){
-					if(maxHeap[i] < maxHeap[i*2]){
-						swap(i,i*2,maxHeap);
-						i = i*2;
-					}else{
-						break;
-					}
-				// 오른쪽 자식이 마지막 노드인 경우
-				}else{
-					if(maxHeap[i*2+1] < maxHeap[i*2]){
-						if(maxHeap[i] < maxHeap[i*2]){
-							swap(i,i*2,maxHeap);
-							i = i*2;
-						}else{
-							break;
-						}
-					}else{
-						if(maxHeap[i] < maxHeap[i*2+1]){
-							swap(i,i*2+1,maxHeap);
-							i = i*2+1;
-						}else{
-							break;
-						}
-					}
-				}
-			}
-			
 		}
+		return result;
 	}
 }
