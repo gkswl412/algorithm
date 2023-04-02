@@ -5,36 +5,31 @@ public class Main {
         InputStreamReader reader = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(reader);
         
-        String[] nm = br.readLine().split(" ");
-        int n = Integer.parseInt(nm[0]);
-        int m = Integer.parseInt(nm[1]);
+        String[] NM = br.readLine().split(" ");
+        int N = Integer.parseInt(NM[0]);
+        int M = Integer.parseInt(NM[1]);
         
-        int[] box = new int[n];
-        
-        // 배열 초기화
-        for(int i=0; i<box.length; i++) {
-            box[i] = i+1;
+        int[] baskets = new int[N+1];
+        for(int i=0; i<baskets.length; i++) {
+            baskets[i] = i;
         }
         
-        for(int i=0; i<m; i++) {
-            String[] input = br.readLine().split(" ");
-            int from = Integer.parseInt(input[0])-1;
-            int to = Integer.parseInt(input[1])-1;
+        for(int i=0; i<M; i++) {
+            String[] FROMTO = br.readLine().split(" ");
+            int FROM = Integer.parseInt(FROMTO[0]);
+            int TO = Integer.parseInt(FROMTO[1]);
             
-            int[] part = new int[to+1];
-            for(int j=from; j<=to; j++) {
-                part[j] = box[j];
-            }
-            
-            for(int k=from; k<=to; k++) {
-                box[k] = part[to-k+from];
+            while(FROM<TO) {
+                int temp = baskets[FROM];
+                baskets[FROM++] = baskets[TO];
+                baskets[TO--] = temp;
             }
         }
         
         StringBuilder sb = new StringBuilder();
         
-        for(int i=0; i<box.length; i++) {
-            sb.append(box[i] + " ");
+        for(int i=1; i<baskets.length; i++) {
+            sb.append(baskets[i] + " ");
         }
         
         System.out.println(sb.toString().trim());
