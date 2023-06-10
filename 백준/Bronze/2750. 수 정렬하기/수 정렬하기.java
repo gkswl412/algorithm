@@ -22,6 +22,8 @@ public class Main {
                 } else {
                     if (j==numbers.size()-1) {
                         numbers.add(num);
+                        /// numbers 리스트에 num 을 담게되면, 리스트의 크기가 1 커지게 된다.
+                        /// break을 안해주면 무한으로 리스트에 같은 num 값을 담게 된다.
                         break;
                     } else {
                         continue;
