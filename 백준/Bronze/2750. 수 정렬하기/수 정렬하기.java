@@ -9,31 +9,25 @@ public class Main {
         
         int n = Integer.parseInt(br.readLine());
         
-        List<Integer> numbers = new ArrayList<Integer>();
+        int[] arr = new int[n];
         
-        numbers.add(Integer.parseInt(br.readLine()));
+        for (int i=0; i<n; i++) {
+            arr[i] = Integer.parseInt(br.readLine());
+        }
         
-        for (int i=1; i<n; i++) {
-            int num = Integer.parseInt(br.readLine());
-            for (int j=0; j<numbers.size(); j++) {
-                if (numbers.get(j) > num) {
-                    numbers.add(j, num);
-                    break;
-                } else {
-                    if (j==numbers.size()-1) {
-                        numbers.add(num);
-                        /// numbers 리스트에 num 을 담게되면, 리스트의 크기가 1 커지게 된다.
-                        /// break을 안해주면 무한으로 리스트에 같은 num 값을 담게 된다.
-                        break;
-                    } else {
-                        continue;
-                    }
+        // 버블 정렬
+        for(int i=0; i<n-1; i++) {
+            for(int j=1; j<n-i; j++) {
+                if (arr[j-1] > arr[j]) {
+                    int temp = arr[j-1];
+                    arr[j-1] = arr[j];
+                    arr[j] = temp;
                 }
             }
         }
         
-        for (int i=0; i<numbers.size(); i++) {
-            sb.append(numbers.get(i)).append("\n");
+        for(int i=0; i<n; i++) {
+            sb.append(arr[i]).append("\n");
         }
         
         System.out.println(sb);
