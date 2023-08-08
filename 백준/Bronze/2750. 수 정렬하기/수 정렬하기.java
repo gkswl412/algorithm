@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.stream.Stream;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -9,28 +7,31 @@ public class Main {
         StringBuilder sb = new StringBuilder();
         
         int n = Integer.parseInt(br.readLine());
-        Integer[] arr = new Integer[n];
+        
+        int[] arr = new int[n];
         
         for (int i=0; i<n; i++) {
             arr[i] = Integer.parseInt(br.readLine());
         }
         
-        // 삽입 정렬 (Insertion Sort)
-        for (int i=1; i<n; i++) {
-            int temp = arr[i];
-            int prev = i - 1;
-            while (prev >= 0 && arr[prev] > temp) {
-                arr[prev + 1] = arr[prev];
-                prev--;
-            }
-            arr[prev + 1] = temp;
+        new Main().sort(arr);
+        
+        for (int i=0; i<n; i++) {
+            sb.append(arr[i]).append("\n");
         }
         
-        
-        Stream<Integer> stream = Arrays.stream(arr);
-        
-        stream.forEach(i -> sb.append(i).append("\n"));
-        
         System.out.println(sb);
+    }
+    
+    public void sort(int[] arr) {
+        for (int i=0; i<arr.length; i++) {
+            for (int j=1; j<arr.length-i; j++) {
+                if (arr[j-1] > arr[j]) {
+                    int temp = arr[j-1];
+                    arr[j-1] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
     }
 }
