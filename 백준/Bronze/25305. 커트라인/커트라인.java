@@ -1,5 +1,4 @@
 import java.io.*;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -10,19 +9,27 @@ public class Main {
         int n = Integer.parseInt(nk[0]);
         int k = Integer.parseInt(nk[1]);
         
-        int[] scores = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+        String[] stringScoresArr = br.readLine().split(" ");
+        int[] scores = new int[n];
         
-        // 삽입 정렬 (n 개의 데이터)
-        for (int i=1; i<n; i++) {
-            int temp = scores[i];
-            int prev = i-1;
-            while ( prev >= 0 && (scores[prev] < temp) ) {
-                scores[prev+1] = scores[prev];
-                prev--;
-            }
-            scores[prev+1] = temp;
+        for(int i=0; i<n; i++) {
+            scores[i] = Integer.parseInt(stringScoresArr[i]);
         }
         
-        System.out.println(scores[k-1]);
+        new Main().sort(scores);
+        
+        System.out.println(scores[n-k]);
+    }
+    
+    public void sort(int[] arr) {
+        for(int i=1; i<arr.length; i++) {
+            int prev = i-1;
+            int temp = arr[i];
+            while(prev >= 0 && arr[prev] > temp) {
+                arr[prev+1] = arr[prev];
+                prev--;
+            }
+            arr[prev+1] = temp;
+        }
     }
 }
