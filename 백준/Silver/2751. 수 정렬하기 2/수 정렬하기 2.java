@@ -15,7 +15,7 @@ public class Main {
             arr[i] = Integer.parseInt(br.readLine());
         }
         
-        new Main().mergeSort(arr, 0, n-1);
+        new Main().mergeSort(arr,0,n-1);
         
         for(int i=0; i<n; i++) {
             sb.append(arr[i]).append("\n");
@@ -25,7 +25,7 @@ public class Main {
     }
     
     public void mergeSort(int[] arr, int left, int right) {
-        if (left < right) {
+        if(left < right) {
             int mid = (left + right) / 2;
             
             mergeSort(arr, left, mid);
@@ -38,22 +38,22 @@ public class Main {
         int[] leftArr = Arrays.copyOfRange(arr, left, mid+1);
         int[] rightArr = Arrays.copyOfRange(arr, mid+1, right+1);
         
-        int i = 0, j = 0, k = left;
+        int i=0, j=0, k=left;
         
-        while(i<leftArr.length && j<rightArr.length) {
-            if (leftArr[i] > rightArr[j]) {
+        while(leftArr.length > i && rightArr.length > j) {
+            if(leftArr[i] > rightArr[j]) {
                 arr[k] = rightArr[j++];
-            } else {
+            }else{
                 arr[k] = leftArr[i++];
             }
             k++;
         }
         
-        while(i < leftArr.length) {
+        while(leftArr.length > i) {
             arr[k++] = leftArr[i++];
         }
         
-        while(j < rightArr.length) {
+        while(rightArr.length > j) {
             arr[k++] = rightArr[j++];
         }
     }
