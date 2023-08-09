@@ -42,11 +42,10 @@ public class Main {
         
         while(leftArr.length > i && rightArr.length > j) {
             if(leftArr[i] > rightArr[j]) {
-                arr[k] = rightArr[j++];
+                arr[k++] = rightArr[j++];
             }else{
-                arr[k] = leftArr[i++];
+                arr[k++] = leftArr[i++];
             }
-            k++;
         }
         
         while(leftArr.length > i) {
