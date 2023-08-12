@@ -23,15 +23,18 @@ public class Main {
         System.out.println(sb);
     }
     
+    // 오름차순 정렬(선택 정렬, selection sort)
     public void sort(int[] arr) {
-        for(int i=1; i<arr.length; i++) {
-            for(int j=0; j<arr.length-i; j++) {
-                if(arr[j] < arr[j+1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j+1];
-                    arr[j+1] = temp;
+        for(int i=0; i<arr.length-1; i++) {
+            int maxIndex = i;
+            for(int j=i+1; j<arr.length; j++) {
+                if(arr[maxIndex] < arr[j]) {
+                    maxIndex = j;
                 }
             }
+            int temp = arr[i];
+            arr[i] = arr[maxIndex];
+            arr[maxIndex] = temp;
         }
     }
 }
